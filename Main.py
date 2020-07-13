@@ -23,8 +23,8 @@ import datetime
 ## variables:
 dossier="F:\GL_Antoine\webmap" ### working directory
 min_slope = 70  ### valeur de pente minimale pour etre identifi� comme un cliff (en degr�s)
-surface_min = 1000 ### surface minimale pour �tre consid�r� comme une falaise int�ressante (en metres carr�s)
-hauteur_min = 100 ### hauteur minimale pour �tre ocnsid�r�e comme une falaise int�ressante (en m�tres)
+surface_min = 100 ### surface minimale pour �tre consid�r� comme une falaise int�ressante (en metres carr�s)
+hauteur_min = 20 ### hauteur minimale pour �tre ocnsid�r�e comme une falaise int�ressante (en m�tres)
 region=fr"{dossier}\region_proj.shp"  ## path vers le shapes de regions
 index=fr"{dossier}\Index_MNT20k.shp" ### path vers index des feuillets
 geol=fr"{dossier}\geol_simple.shp" ### path vers le fichier des zones geologiques du Quebec
@@ -300,6 +300,9 @@ for f in liste_shp:
             gdf_all = pd.concat([gdf_all, gdf], sort=False)
     else:
         continue
+        
+### clip avec les limites de la région ou du shape
+gdf_all=gpd.overlay(gdf_all, region, how='intersection')
  
 ### enlever les carrieres  
 print('removing quarries...')   
@@ -327,6 +330,3 @@ time_elapsed = end_timer - start_timer
 print(f'Cliffs identified for region {r} in {time_elapsed}')
 
 quit()
-
-
-
